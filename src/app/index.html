@@ -36,6 +36,7 @@
       border: none;
       color: white;
       border-radius: 5px;
+      margin-left: 6px;
     }
     button:hover { background: #0056b3; }
     #qr-code {
@@ -53,12 +54,62 @@
     }
     .error { color: red; margin-top: 10px; }
     .success { color: green; margin-top: 10px; }
-    #map {
+    #map, #name-card-placeholder {
       width: 100%;
       height: 400px;
       margin-top: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      background: white;
+      position: relative;
+    }
+
+    /* Name card styles */
+    .name-card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card-inner {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      background: linear-gradient(180deg,#fff,#f9f9fb);
+      padding: 18px 22px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      min-width: 320px;
+      max-width: 720px;
+    }
+    .card-text {
+      text-align: left;
+    }
+    .card-text h3 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+    }
+    .card-text .sub {
+      font-size: 14px;
+      color: #555;
+    }
+    .card-qr {
+      width: 200px;
+      height: 200px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .small-path {
+      margin-top: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      color: #333;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -70,6 +121,8 @@
     <input type="text" id="name-input" placeholder="e.g., Jan Kowalski" />
     <br />
     <button id="generate-btn">Generate QR Code</button>
+    <!-- fixed button closing tag -->
+    <button id="gen-temp" onclick="template()">Generate template</button>
 
     <div id="qr-result" style="display:none;">
       <h2 id="qr-name" style="font-weight: bold; font-size: 24px; margin-bottom: 10px;"></h2>
@@ -81,7 +134,7 @@
     <div class="success" id="success-message"></div>
   </div>
 
-  <div id="map"></div>
+    <div id="map"></div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -93,6 +146,7 @@
     const successMsg = document.getElementById('success-message');
     const qrResult = document.getElementById('qr-result');
     const qrName = document.getElementById('qr-name');
+    const mapDiv = document.getElementById('map');
 
     let currentFilePath = "";
 
@@ -102,6 +156,7 @@
       "Kamil Wachnicki": [50.2447, 21.7758]
     };
 
+    // initialize map
     const map = L.map('map').setView([50.2447, 21.7758], 16);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -131,6 +186,19 @@
       map.fitBounds(bounds, { padding: [50, 50] });
     }
 
+    function generateQRCodeForPath(path, targetElement, size = 200) {
+      targetElement.innerHTML = "";
+      new QRCode(targetElement, {
+        text: path,
+        width: size,
+        height: size
+      });
+      // set click behavior for QR
+      targetElement.onclick = () => {
+        window.open(path, "_blank");
+      };
+    }
+
     generateBtn.addEventListener('click', function() {
       const name = nameInput.value.trim();
       qrCodeContainer.innerHTML = "";
@@ -149,15 +217,7 @@
       filePathDiv.textContent = currentFilePath;
       qrName.textContent = name.toUpperCase();
 
-      new QRCode(qrCodeContainer, {
-        text: currentFilePath,
-        width: 200,
-        height: 200
-      });
-
-      qrCodeContainer.onclick = () => {
-        window.open(currentFilePath, "_blank");
-      };
+      generateQRCodeForPath(currentFilePath, qrCodeContainer, 200);
 
       successMsg.textContent = "QR code generated successfully!";
       qrResult.style.display = "block";
@@ -180,10 +240,65 @@
       nameInput.value = "Jan Kowalski";
       setTimeout(() => generateBtn.click(), 500);
     });
+
+    // template() hides the map and spawns a name-card element with QR code in its place
+    window.template = function() {
+      // use current name if available, otherwise fallback to input or default
+      let displayName = "";
+      if (qrName.textContent) {
+        displayName = qrName.textContent;
+      } else {
+        displayName = (nameInput.value && nameInput.value.trim()) ? nameInput.value.trim() : "Jan Kowalski";
+        // keep same uppercase behaviour as earlier
+        displayName = displayName.toUpperCase();
+      }
+      const formattedName = displayName.replace(/\s+/g, "_");
+      const path = `./${formattedName}`;
+
+      // hide the actual map container
+      mapDiv.style.display = "none";
+
+      // if a placeholder already exists, remove it first (allows re-generating)
+      const existing = document.getElementById('name-card-placeholder');
+      if (existing) existing.remove();
+
+      // create placeholder div same size as map and insert after the map in DOM
+      const placeholder = document.createElement('div');
+      placeholder.id = 'name-card-placeholder';
+      placeholder.className = 'name-card';
+      // create inner card markup
+      placeholder.innerHTML = `
+        <div class="card-inner">
+          <div class="card-qr" id="template-qr"></div>
+          <div class="card-text">
+            <h3 id="template-name">${displayName}</h3>
+            <div class="sub">Name card · Scan to open</div>
+            <div class="small-path" id="template-path">${path}</div>
+          </div>
+        </div>
+      `;
+
+      // insert placeholder after the original map div
+      mapDiv.parentNode.insertBefore(placeholder, mapDiv.nextSibling);
+
+      // generate QR inside template-qr
+      const qrTarget = document.getElementById('template-qr');
+      qrTarget.innerHTML = "";
+      new QRCode(qrTarget, {
+        text: path,
+        width: 200,
+        height: 200
+      });
+      // make QR clickable
+      qrTarget.onclick = () => window.open(path, "_blank");
+
+      // also update small path text to be clickable (open file)
+      const pathElem = document.getElementById('template-path');
+      pathElem.style.cursor = 'pointer';
+      pathElem.onclick = () => window.open(path, "_blank");
+    };
   });
 </script>
-<!--tgrsdhgjtuykiuolukjhngbfvdcsxsdfgsdvdfgf-->
-
 
 </body>
 </html>
