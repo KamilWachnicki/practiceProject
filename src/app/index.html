@@ -113,7 +113,7 @@
 
     for (const [name, coords] of Object.entries(userLocations)) {
       const formattedName = name.replace(/\s+/g, "_");
-      const filePath = `file:///C:/Users/Praktyki2025/Desktop/GitZad/${formattedName}.html`;
+      const filePath = `./${formattedName}.html`;
 
       const marker = L.marker(coords)
         .addTo(map)
@@ -145,7 +145,7 @@
       }
 
       const formattedName = name.replace(/\s+/g, "_");
-      currentFilePath = `file:///C:/Users/Praktyki2025/Desktop/GitZad/${formattedName}.html`;
+      currentFilePath = `./${formattedName}`;
       filePathDiv.textContent = currentFilePath;
       qrName.textContent = name.toUpperCase();
 
