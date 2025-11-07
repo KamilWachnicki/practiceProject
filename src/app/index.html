@@ -83,88 +83,109 @@
 
   <div id="map"></div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const nameInput = document.getElementById('name-input');
-      const generateBtn = document.getElementById('generate-btn');
-      const qrCodeContainer = document.getElementById('qr-code');
-      const filePathDiv = document.getElementById('file-path');
-      const errorMsg = document.getElementById('error-message');
-      const successMsg = document.getElementById('success-message');
-      const qrResult = document.getElementById('qr-result');
-      const qrName = document.getElementById('qr-name');
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const qrCodeContainer = document.getElementById('qr-code');
+    const filePathDiv = document.getElementById('file-path');
+    const errorMsg = document.getElementById('error-message');
+    const successMsg = document.getElementById('success-message');
+    const qrResult = document.getElementById('qr-result');
+    const qrName = document.getElementById('qr-name');
 
-      let currentFilePath = "";
+    let currentFilePath = "";
 
-      const userLocations = {
-        "Patryk Zygmunt": [50.2450, 21.7750], 
-        "Daniel Olszowy": [50.2445, 21.7765], 
-        "Kamil Wachnicki": [50.2447, 21.7758]    
+    // Predefined users with coordinates
+    const userLocations = {
+      "Patryk Zygmunt": [50.2450, 21.7750], 
+      "Daniel Olszowy": [50.2445, 21.7765], 
+      "Kamil Wachnicki": [50.2447, 21.7758]    
+    };
+
+    // Initialize the map
+    const map = L.map('map').setView([50.2447, 21.7758], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    let allMarkers = [];
+    let bounds = L.latLngBounds(); // used to auto-zoom to show all
+
+    // ✅ Automatically add all user pins
+    for (const [name, coords] of Object.entries(userLocations)) {
+      const formattedName = name.replace(/\s+/g, "_");
+      const filePath = `file:///C:/Users/Praktyki2025/Desktop/GitZad/${formattedName}.html`;
+
+      const marker = L.marker(coords)
+        .addTo(map)
+        .bindPopup(`<b>${name}</b><br>${formattedName}.html`);
+
+      allMarkers.push(marker);
+      bounds.extend(coords);
+    }
+
+    // ✅ Adjust map view to show all markers
+    if (allMarkers.length > 0) {
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    generateBtn.addEventListener('click', function() {
+      const name = nameInput.value.trim();
+      qrCodeContainer.innerHTML = "";
+      errorMsg.textContent = "";
+      successMsg.textContent = "";
+      qrResult.style.display = "none";
+      qrName.textContent = "";
+
+      if (!name) {
+        errorMsg.textContent = "Please enter your name and surname.";
+        return;
+      }
+
+      const formattedName = name.replace(/\s+/g, "_");
+      currentFilePath = `file:///C:/Users/Praktyki2025/Desktop/GitZad/${formattedName}.html`;
+      filePathDiv.textContent = currentFilePath;
+      qrName.textContent = name.toUpperCase();
+
+      new QRCode(qrCodeContainer, {
+        text: currentFilePath,
+        width: 200,
+        height: 200
+      });
+
+      qrCodeContainer.onclick = () => {
+        window.open(currentFilePath, "_blank");
       };
 
-      const map = L.map('map').setView([50.2447, 21.7758], 16);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-      }).addTo(map);
+      successMsg.textContent = "QR code generated successfully!";
+      qrResult.style.display = "block";
 
-      let marker = null;
+      const location = userLocations[name] || [50.2447, 21.7758];
 
-      generateBtn.addEventListener('click', function() {
-        const name = nameInput.value.trim();
-        qrCodeContainer.innerHTML = "";
-        errorMsg.textContent = "";
-        successMsg.textContent = "";
-        qrResult.style.display = "none";
-        qrName.textContent = "";
+      // Focus the map on selected user
+      map.setView(location, 17);
 
-        if (!name) {
-          errorMsg.textContent = "Please enter your name and surname.";
-          return;
-        }
-
-        const formattedName = name.replace(/\s+/g, "_");
-        currentFilePath = `file:///C:/Users/Praktyki2025/Desktop/GitZad/${formattedName}.html`;
-        filePathDiv.textContent = currentFilePath;
-
-        qrName.textContent = name.toUpperCase();
-
-        new QRCode(qrCodeContainer, {
-          text: currentFilePath,
-          width: 200,
-          height: 200
-        });
-
-        qrCodeContainer.onclick = () => {
-          window.open(currentFilePath, "_blank");
-        };
-
-        successMsg.textContent = "QR code generated successfully!";
-        qrResult.style.display = "block";
-
-        const location = userLocations[name] || [50.2447, 21.7758];
-
-        if (marker) {
-          map.removeLayer(marker);
-        }
-
-        marker = L.marker(location)
-          .addTo(map)
-          .bindPopup(`<b>${name}</b><br>QR Code location<br>${formattedName}.html`)
-          .openPopup();
-
-        map.setView(location, 17);
-      });
-
-      nameInput.addEventListener('keypress', e => {
-        if (e.key === "Enter") generateBtn.click();
-      });
-
-      window.addEventListener('load', () => {
-        nameInput.value = "Jan Kowalski";
-        setTimeout(() => generateBtn.click(), 500);
-      });
+      // Open popup on selected user
+      L.popup()
+        .setLatLng(location)
+        .setContent(`<b>${name}</b><br>${formattedName}.html`)
+        .openOn(map);
     });
-  </script>
+
+    nameInput.addEventListener('keypress', e => {
+      if (e.key === "Enter") generateBtn.click();
+    });
+
+    // Auto-generate example QR code on load
+    window.addEventListener('load', () => {
+      nameInput.value = "Jan Kowalski";
+      setTimeout(() => generateBtn.click(), 500);
+    });
+  });
+</script>
+
+
 </body>
 </html>
