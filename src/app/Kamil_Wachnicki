@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamil Wachnicki - Życiorys</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+      background: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #0b5ed7;
+    }
+    .section {
+      margin-top: 25px;
+    }
+    .section p {
+      text-align: justify;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kamil Wachnicki</h1>
+    <p><strong>Data urodzenia:</strong> 9 listopada 1996 r.</p>
+    <p><strong>Miejsce zamieszkania:</strong> Gdańsk, Polska</p>
+    
+    <div class="section">
+      <h2>Życiorys</h2>
+      <p>
+        Nazywam się Kamil Wachnicki i pochodzę z Gdańska. Od dziecka byłem ciekawy świata, szczególnie tego cyfrowego. 
+        Moje pierwsze doświadczenia z technologią zaczęły się od modyfikowania gier komputerowych i tworzenia własnych stron internetowych.
+      </p>
+      <p>
+        Po ukończeniu liceum informatycznego rozpocząłem studia na Uniwersytecie Gdańskim na kierunku Informatyka. 
+        Tam rozwinąłem swoje zainteresowania w kierunku tworzenia aplikacji webowych i projektowania interfejsów użytkownika (UI/UX).
+      </p>
+      <p>
+        Po studiach pracowałem jako front-end developer w firmie programistycznej, gdzie współtworzyłem systemy e-commerce oraz aplikacje
+        edukacyjne. Zawsze staram się tworzyć rozwiązania, które są nie tylko funkcjonalne, ale i estetyczne.
+      </p>
+      <p>
+        Poza pracą lubię sport — szczególnie żeglarstwo i siatkówkę. W wolnych chwilach gram na perkusji i uczę się produkcji muzycznej.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Umiejętności</h2>
+      <ul>
+        <li>HTML5, CSS3, JavaScript (ES6+)</li>
+        <li>React, Vue.js, Bootstrap</li>
+        <li>UI/UX Design, Figma</li>
+        <li>Podstawy Node.js i Express</li>
+        <li>Język angielski – poziom C1</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Kontakt</h2>
+      <p><strong>Email:</strong> kamil.wachnicki@example.com</p>
+      <p><strong>Telefon:</strong> +48 605 447 910</p>
+      <p><strong>LinkedIn:</strong> linkedin.com/in/kamil-wachnicki</p>
+    </div>
+
+    <footer>
+      © 2025 Kamil Wachnicki — Strona osobista (fikcyjna)
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patryk Zygmunt - Życiorys</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+      background: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #0056b3;
+    }
+    .section {
+      margin-top: 25px;
+    }
+    .section p {
+      text-align: justify;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Patryk Zygmunt</h1>
+    <p><strong>Data urodzenia:</strong> 14 maja 1998 r.</p>
+    <p><strong>Miejsce zamieszkania:</strong> Kraków, Polska</p>
+    
+    <div class="section">
+      <h2>Życiorys</h2>
+      <p>
+        Nazywam się Patryk Zygmunt. Urodziłem się w Krakowie, gdzie spędziłem większość swojego życia. 
+        Od najmłodszych lat interesowałem się technologią, komputerami i tym, jak działają rzeczy wokół mnie. 
+        Już w liceum samodzielnie uczyłem się programowania w językach takich jak C++ i Python, a pierwsze 
+        projekty tworzyłem dla znajomych — proste gry i aplikacje użytkowe.
+      </p>
+      <p>
+        Po ukończeniu liceum rozpocząłem studia na Akademii Górniczo-Hutniczej w Krakowie na kierunku Informatyka 
+        Stosowana. W czasie studiów aktywnie uczestniczyłem w kołach naukowych i projektach zespołowych, 
+        skupiających się na sztucznej inteligencji oraz analizie danych. W 2021 roku obroniłem pracę inżynierską 
+        dotyczącą zastosowania uczenia maszynowego w diagnostyce medycznej.
+      </p>
+      <p>
+        Po studiach rozpocząłem pracę jako młodszy programista w firmie technologicznej, gdzie rozwijam swoje 
+        umiejętności w zakresie tworzenia aplikacji webowych i automatyzacji procesów. Najbardziej pasjonuje mnie 
+        łączenie nowoczesnych technologii z praktycznymi rozwiązaniami dla ludzi.
+      </p>
+      <p>
+        W wolnym czasie lubię podróżować, fotografować krajobrazy i grać na gitarze. Interesuję się również 
+        psychologią poznawczą oraz wpływem technologii na rozwój społeczeństwa.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Umiejętności</h2>
+      <ul>
+        <li>Programowanie: Python, JavaScript, HTML, CSS, SQL</li>
+        <li>Tworzenie aplikacji webowych (React, Node.js)</li>
+        <li>Podstawy uczenia maszynowego</li>
+        <li>Git i praca zespołowa</li>
+        <li>Język angielski – poziom B2+</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Kontakt</h2>
+      <p><strong>Email:</strong> patryk.zygmunt@example.com</p>
+      <p><strong>Telefon:</strong> +48 600 123 987</p>
+      <p><strong>LinkedIn:</strong> linkedin.com/in/patryk-zygmunt</p>
+    </div>
+
+    <footer>
+      © 2025 Patryk Zygmunt — Strona osobista (fikcyjna)
+    </footer>
+  </div>
+</body>
+</html>

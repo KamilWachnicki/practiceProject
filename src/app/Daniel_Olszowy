@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daniel Olszowy - Życiorys</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+      background: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #0d6efd;
+    }
+    .section {
+      margin-top: 25px;
+    }
+    .section p {
+      text-align: justify;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daniel Olszowy</h1>
+    <p><strong>Data urodzenia:</strong> 22 marca 1997 r.</p>
+    <p><strong>Miejsce zamieszkania:</strong> Wrocław, Polska</p>
+    
+    <div class="section">
+      <h2>Życiorys</h2>
+      <p>
+        Nazywam się Daniel Olszowy i pochodzę z Wrocławia. Od zawsze fascynowały mnie nowe technologie oraz to,
+        w jaki sposób mogą one ułatwiać codzienne życie ludzi. Już w gimnazjum zacząłem interesować się elektroniką
+        i informatyką — własnoręcznie zbudowałem kilka prostych układów Arduino oraz nauczyłem się podstaw programowania w języku C.
+      </p>
+      <p>
+        Po ukończeniu technikum informatycznego zdecydowałem się kontynuować naukę na Politechnice Wrocławskiej, 
+        gdzie studiowałem Automatykę i Robotykę. W trakcie studiów uczestniczyłem w projektach związanych z Internetem Rzeczy (IoT)
+        oraz zdalnym sterowaniem urządzeń przemysłowych.
+      </p>
+      <p>
+        Obecnie pracuję jako inżynier oprogramowania w firmie technologicznej, gdzie zajmuję się integracją systemów 
+        automatyki oraz projektowaniem aplikacji wspomagających proces produkcyjny. Moim celem jest łączenie wiedzy 
+        inżynierskiej z nowoczesnym oprogramowaniem, które realnie usprawnia pracę ludzi.
+      </p>
+      <p>
+        Po pracy najczęściej spędzam czas aktywnie — biegam, jeżdżę na rowerze lub wspinam się. Uwielbiam podróże 
+        i fotografię przyrodniczą, która pozwala mi odpocząć od codziennych obowiązków.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Umiejętności</h2>
+      <ul>
+        <li>Programowanie: C, Python, JavaScript</li>
+        <li>Arduino, Raspberry Pi</li>
+        <li>Projektowanie systemów IoT</li>
+        <li>Automatyka przemysłowa i sterowniki PLC</li>
+        <li>Język angielski – poziom B2</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Kontakt</h2>
+      <p><strong>Email:</strong> daniel.olszowy@example.com</p>
+      <p><strong>Telefon:</strong> +48 601 334 222</p>
+      <p><strong>LinkedIn:</strong> linkedin.com/in/daniel-olszowy</p>
+    </div>
+
+    <footer>
+      © 2025 Daniel Olszowy — Strona osobista (fikcyjna)
+    </footer>
+  </div>
+</body>
+</html>
