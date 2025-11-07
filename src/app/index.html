@@ -1,11 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Code Generator + Mapa Kolbuszowa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #007BFF;
+      border: none;
+      color: white;
+      border-radius: 5px;
+    }
+    button:hover { background: #0056b3; }
+    #qr-code {
+      margin-top: 20px;
+      cursor: pointer;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    #qr-code:hover { transform: scale(1.05); }
+    .file-path {
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 14px;
+      color: #333;
+    }
+    .error { color: red; margin-top: 10px; }
+    .success { color: green; margin-top: 10px; }
+    #map {
+      width: 100%;
+      height: 400px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
 </head>
 <body>
-safd
+  <div class="container">
+    <h1>QR Code Generator</h1>
+    <p>Generate QR codes for file paths</p>
+
+    <input type="text" id="name-input" placeholder="e.g., Jan Kowalski" />
+    <br />
+    <button id="generate-btn">Generate QR Code</button>
+
+    <div id="qr-result" style="display:none;">
+      <h2 id="qr-name" style="font-weight: bold; font-size: 24px; margin-bottom: 10px;"></h2>
+      <div id="qr-code"></div>
+      <div class="file-path" id="file-path"></div>
+    </div>
+
+    <div class="error" id="error-message"></div>
+    <div class="success" id="success-message"></div>
+  </div>
+
+  <div id="map"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('name-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const qrCodeContainer = document.getElementById('qr-code');
+    const filePathDiv = document.getElementById('file-path');
+    const errorMsg = document.getElementById('error-message');
+    const successMsg = document.getElementById('success-message');
+    const qrResult = document.getElementById('qr-result');
+    const qrName = document.getElementById('qr-name');
+
+    let currentFilePath = "";
+
+    const userLocations = {
+      "Patryk Zygmunt": [50.2450, 21.7750],
+      "Daniel Olszowy": [50.2445, 21.7765],
+      "Kamil Wachnicki": [50.2447, 21.7758]
+    };
+
+    const map = L.map('map').setView([50.2447, 21.7758], 16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    let allMarkers = [];
+    let bounds = L.latLngBounds();
+
+    for (const [name, coords] of Object.entries(userLocations)) {
+      const formattedName = name.replace(/\s+/g, "_");
+      const filePath = `./${formattedName}.html`;
+
+      const marker = L.marker(coords)
+        .addTo(map)
+        .bindPopup(`<b>${name}</b><br>${formattedName}.html<br><small>Click marker to open</small>`);
+
+      marker.on('click', () => {
+        window.open(filePath, "_blank");
+      });
+
+      allMarkers.push(marker);
+      bounds.extend(coords);
+    }
+
+    if (allMarkers.length > 0) {
+      map.fitBounds(bounds, { padding: [50, 50] });
+    }
+
+    generateBtn.addEventListener('click', function() {
+      const name = nameInput.value.trim();
+      qrCodeContainer.innerHTML = "";
+      errorMsg.textContent = "";
+      successMsg.textContent = "";
+      qrResult.style.display = "none";
+      qrName.textContent = "";
+
+      if (!name) {
+        errorMsg.textContent = "Please enter your name and surname.";
+        return;
+      }
+
+      const formattedName = name.replace(/\s+/g, "_");
+      currentFilePath = `./${formattedName}`;
+      filePathDiv.textContent = currentFilePath;
+      qrName.textContent = name.toUpperCase();
+
+      new QRCode(qrCodeContainer, {
+        text: currentFilePath,
+        width: 200,
+        height: 200
+      });
+
+      qrCodeContainer.onclick = () => {
+        window.open(currentFilePath, "_blank");
+      };
+
+      successMsg.textContent = "QR code generated successfully!";
+      qrResult.style.display = "block";
+
+      const location = userLocations[name] || [50.2447, 21.7758];
+
+      map.setView(location, 17);
+
+      L.popup()
+        .setLatLng(location)
+        .setContent(`<b>${name}</b><br>${formattedName}.html`)
+        .openOn(map);
+    });
+
+    nameInput.addEventListener('keypress', e => {
+      if (e.key === "Enter") generateBtn.click();
+    });
+
+    window.addEventListener('load', () => {
+      nameInput.value = "Jan Kowalski";
+      setTimeout(() => generateBtn.click(), 500);
+    });
+  });
+</script>
+<!--tgrsdhgjtuykiuolukjhngbfvdcsxsdfgsdvdfgf-->
+
+
 </body>
 </html>
